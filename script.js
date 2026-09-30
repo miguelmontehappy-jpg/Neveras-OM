@@ -1,22 +1,7 @@
-/* ============================================================
-   NEVERAS OM - script.js (versión con Firebase Firestore)
 
-   IMPORTANTE: este archivo usa "import", por eso en el HTML
-   debe cargarse así: <script type="module" src="script.js"></script>
-   ============================================================ */
-
-// --- 1. Traemos las piezas de Firebase que necesitamos desde su CDN ---
-// initializeApp conecta este sitio con TU proyecto de Firebase.
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
 
-// De Firestore usamos:
-// - getFirestore: obtiene la base de datos de tu proyecto
-// - collection: apunta a una "carpeta" dentro de la base de datos (aquí, "citas")
-// - addDoc: agrega un documento nuevo a una colección
-// - onSnapshot: "escucha" la colección y se ejecuta automáticamente
-//   cada vez que algo cambia, EN CUALQUIER DISPOSITIVO. Esta es la
-//   pieza clave que reemplaza a localStorage.
-// - doc / updateDoc: para modificar un documento que ya existe (ej. finalizar una cita)
+
 import {
   getFirestore,
   collection,
@@ -26,7 +11,7 @@ import {
   updateDoc
 } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
-// ⚠️ Configuración de TU proyecto de Firebase (Neveras OM)
+// ⚠️ Configuración de proyecto de Firebase (Neveras OM)
 const firebaseConfig = {
   apiKey: "AIzaSyDP33smZJ4Mwpzk2gCCib8e9YF-6NKS2r0",
   authDomain: "neveras-om.firebaseapp.com",
@@ -39,20 +24,17 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// "citas" es el nombre de la colección (carpeta) dentro de Firestore.
-// Si no existe todavía, Firebase la crea sola en cuanto guardes la primera cita.
+
 const citasCollection = collection(db, 'citas');
 
 
-// --- 2. "Atrapamos" los elementos del HTML que vamos a usar ---
+
 const formCita = document.getElementById('form-cita');
 const listaCitas = document.getElementById('lista-citas');
 const tablaClientesBody = document.querySelector('#tabla-clientes tbody');
 const listaOcupados = document.getElementById('lista-ocupados');
 
-// Clave simple para el técnico. OJO: esto NO es seguridad real,
-// cualquiera que abra este archivo puede verla. Solo sirve como
-// candado básico mientras el proyecto no tiene un login de verdad.
+
 const CLAVE_TECNICO = 'om2026';
 
 const botonChat = document.getElementById('boton-chat');
@@ -63,19 +45,8 @@ const inputChat = document.getElementById('input-chat');
 const mensajesChat = document.getElementById('mensajes-chat');
 
 
-/* ============================================================
-   3. ESCUCHAR LA BASE DE DATOS EN TIEMPO REAL
-   onSnapshot se conecta a Firestore y ejecuta esta función:
-   - la primera vez, con los datos que ya existían
-   - y de nuevo, automáticamente, cada vez que CUALQUIER
-     dispositivo agrega, edita o borra una cita.
-   Por eso ya no necesitamos "guardarCitas" ni "obtenerCitas":
-   Firestore se encarga de guardar, y onSnapshot de avisarnos.
-   ============================================================ */
+
 onSnapshot(citasCollection, (snapshot) => {
-  // snapshot.docs es la lista de documentos actuales en la colección.
-  // Convertimos cada documento en un objeto normal de JS, agregando
-  // su "id" (que Firestore genera solo) para poder identificarlo después.
   const citas = snapshot.docs.map((documento) => ({
     id: documento.id,
     ...documento.data()
@@ -87,9 +58,7 @@ onSnapshot(citasCollection, (snapshot) => {
 });
 
 
-/* ============================================================
-   4. AGENDAR CITA
-   ============================================================ */
+
 formCita.addEventListener('submit', async function (evento) {
   evento.preventDefault();
 
@@ -104,20 +73,18 @@ formCita.addEventListener('submit', async function (evento) {
   };
 
   try {
-    // addDoc envía el objeto a Firestore. "await" hace que el código
-    // espere a que termine de guardarse antes de seguir.
+   
     await addDoc(citasCollection, nuevaCita);
     formCita.reset();
     alert('Cita agendada correctamente ✅');
-    // No hace falta llamar a renderizarCitas() aquí: onSnapshot
-    // detecta el cambio solo y actualiza la pantalla.
+    
   } catch (error) {
     console.error('Error al guardar la cita:', error);
     alert('No se pudo agendar la cita. Revisa tu conexión o la configuración de Firebase.');
   }
 });
 
-// Dibuja la lista de citas en el <ul id="lista-citas">
+
 function renderizarCitas(citas) {
   listaCitas.innerHTML = '';
 
@@ -175,11 +142,7 @@ async function finalizarCita(idCita) {
 }
 
 
-/* ============================================================
-   5. CLIENTES (derivados de las citas)
-   En vez de tener una colección aparte, tomamos la lista de citas
-   y sacamos los clientes únicos por número de teléfono.
-   ============================================================ */
+
 function renderizarClientes(citas) {
   const clientesPorTelefono = new Map();
 
@@ -206,9 +169,7 @@ function renderizarClientes(citas) {
 }
 
 
-/* ============================================================
-   6. DISPONIBILIDAD (fechas ocupadas)
-   ============================================================ */
+
 function renderizarOcupados(citas) {
   listaOcupados.innerHTML = '';
 
@@ -229,12 +190,7 @@ function renderizarOcupados(citas) {
 }
 
 
-/* ============================================================
-   7. CHAT (sigue siendo una simulación local, no usa Firestore)
-   Si más adelante quieres que el chat también sea en tiempo real
-   entre dispositivos, se puede migrar de forma parecida, guardando
-   cada mensaje como un documento en otra colección ("mensajes").
-   ============================================================ */
+
 botonChat.addEventListener('click', () => {
   ventanaChat.classList.toggle('oculto');
 });
