@@ -1,4 +1,7 @@
-
+/* ===================== VARIABLES DE COLOR =====================
+   Definir los colores como "variables" (--nombre) permite reutilizarlos
+   en todo el archivo y cambiarlos en un solo lugar si algún día cambia
+   la marca. */
 :root {
   --rojo: #d32f2f;
   --gris-oscuro: #2b2b2b;
@@ -6,7 +9,8 @@
   --blanco: #ffffff;
 }
 
-
+/* Reset básico: quitamos márgenes/rellenos por defecto del navegador
+   y forzamos que padding/border no aumenten el tamaño de los elementos */
 * {
   margin: 0;
   padding: 0;
@@ -68,6 +72,22 @@ body {
 
 .menu a:hover {
   color: var(--rojo);
+}
+
+/* Botón de acceso técnico: se ve como los enlaces del menú, pero es un <button> */
+#boton-acceso-tecnico {
+  background: none;
+  border: 1px solid var(--rojo);
+  color: var(--blanco);
+  margin-left: 1.2rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+#boton-acceso-tecnico.activo {
+  background: var(--rojo);
 }
 
 /* ===================== SECCIONES ===================== */
@@ -143,6 +163,46 @@ body {
   border-left: 4px solid var(--rojo);
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* ===================== ESTADO DE CITAS ===================== */
+.etiqueta-estado {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 0.15rem 0.5rem;
+  border-radius: 10px;
+  margin-left: 0.5rem;
+}
+
+.estado-pendiente {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.estado-ok {
+  background: #d4edda;
+  color: #155724;
+}
+
+.cita-finalizada {
+  opacity: 0.7;
+  border-left-color: #4caf50 !important;
+}
+
+.boton-finalizar {
+  margin-top: 0.5rem;
+  background: var(--gris-oscuro);
+  color: var(--blanco);
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.boton-finalizar:hover {
+  background: var(--rojo);
 }
 
 /* ===================== TABLA DE CLIENTES ===================== */

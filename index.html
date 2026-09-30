@@ -1,64 +1,91 @@
 <!DOCTYPE html>
+<!-- 
+  <!DOCTYPE html> le dice al navegador que este documento usa HTML5.
+  Siempre debe ser la primera línea del archivo.
+-->
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <!-- charset UTF-8 permite usar tildes y la ñ sin que se vean mal -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Esto hace que la página se vea bien en celulares -->
   <title>Servicio Técnico Neveras OM</title>
+
+  <!-- Enlazamos el archivo de estilos -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
- 
+
   <!-- ===================== ENCABEZADO ===================== -->
   <header class="encabezado">
     <div class="logo">
-      <div class="logo-icono"><img></div>
+      <!-- Círculo rojo simulando el ícono de la marca -->
+      <div class="logo-icono">❄️</div>
       <div>
         <h1>SERVICIO TÉCNICO NEVERAS OM</h1>
         <p class="eslogan">PROFESIONAL Y CONFIABLE</p>
       </div>
     </div>
     <nav class="menu">
+      <a href="#disponibilidad">Disponibilidad</a>
       <a href="#agendar">Agendar cita</a>
       <a href="#clientes">Clientes</a>
       <a href="#chat">Chat</a>
+      <!-- Este botón no navega a ninguna sección: solo desbloquea las direcciones -->
+      <button id="boton-acceso-tecnico" type="button">🔑 Acceso técnico</button>
     </nav>
   </header>
- 
+
+  <!-- ===================== DISPONIBILIDAD ===================== -->
+  <section id="disponibilidad" class="seccion">
+    <h2>Disponibilidad del técnico</h2>
+    <p class="tarjeta">
+      Atendemos <strong>Lunes a Sábado, de 8:00 am a 6:00 pm</strong>.<br>
+      Antes de agendar, revisa las fechas que ya están ocupadas:
+    </p>
+    <!-- Aquí JS va a mostrar las fechas que ya tienen cita agendada -->
+    <ul id="lista-ocupados" class="lista"></ul>
+  </section>
+
   <!-- ===================== SECCIÓN AGENDAR CITA ===================== -->
   <section id="agendar" class="seccion">
     <h2>Agendar una cita</h2>
- 
-    
+
+    <!-- 
+      No usamos <form action="..."> porque no hay servidor que reciba el envío.
+      En vez de eso, escuchamos el evento "submit" desde JavaScript (ver script.js)
+    -->
     <form id="form-cita" class="tarjeta">
       <label for="nombre-cita">Nombre completo</label>
       <input type="text" id="nombre-cita" required>
- 
+
       <label for="telefono-cita">Teléfono</label>
       <input type="tel" id="telefono-cita" required>
- 
+
       <label for="direccion-cita">Dirección del servicio</label>
       <input type="text" id="direccion-cita" required>
- 
+
       <label for="fecha-cita">Fecha</label>
       <input type="date" id="fecha-cita" required>
- 
+
       <label for="hora-cita">Hora</label>
       <input type="time" id="hora-cita" required>
- 
+
       <label for="descripcion-cita">Describe el problema de la nevera</label>
       <textarea id="descripcion-cita" rows="3"></textarea>
- 
+
       <button type="submit">Agendar cita</button>
     </form>
- 
+
     <h3>Citas agendadas</h3>
-    
+    <!-- Aquí JavaScript va a "pintar" la lista de citas dinámicamente -->
     <ul id="lista-citas" class="lista"></ul>
   </section>
- 
+
   <!-- ===================== SECCIÓN CLIENTES ===================== -->
   <section id="clientes" class="seccion seccion-alterna">
     <h2>Clientes registrados</h2>
+    <!-- Esta tabla se llena sola: cada cita agendada también guarda al cliente -->
     <table id="tabla-clientes" class="tabla">
       <thead>
         <tr>
@@ -69,13 +96,15 @@
         </tr>
       </thead>
       <tbody>
+        <!-- filas generadas por JS -->
       </tbody>
     </table>
   </section>
- 
+
   <!-- ===================== CHAT ===================== -->
+  <!-- Botón flotante que abre/cierra la ventana de chat -->
   <button id="boton-chat" class="boton-chat">💬</button>
- 
+
   <div id="chat" class="ventana-chat oculto">
     <div class="chat-encabezado">
       <span>Chat con Neveras OM</span>
@@ -87,12 +116,13 @@
       <button type="submit">Enviar</button>
     </form>
   </div>
- 
+
   <footer class="pie">
     <p>&copy; 2026 Servicio Técnico Neveras OM</p>
   </footer>
- 
+
+  <!-- El script va al final del body para que el HTML ya exista cuando JS lo busque.
+       type="module" es necesario porque script.js usa "import" para traer Firebase -->
   <script type="module" src="script.js"></script>
 </body>
 </html>
- 

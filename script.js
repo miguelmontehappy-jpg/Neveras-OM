@@ -1,7 +1,22 @@
+/* ============================================================
+   NEVERAS OM - script.js (versión con Firebase Firestore)
 
+   IMPORTANTE: este archivo usa "import", por eso en el HTML
+   debe cargarse así: <script type="module" src="script.js"></script>
+   ============================================================ */
+
+// --- 1. Traemos las piezas de Firebase que necesitamos desde su CDN ---
+// initializeApp conecta este sitio con TU proyecto de Firebase.
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
 
-
+// De Firestore usamos:
+// - getFirestore: obtiene la base de datos de tu proyecto
+// - collection: apunta a una "carpeta" dentro de la base de datos (aquí, "citas")
+// - addDoc: agrega un documento nuevo a una colección
+// - onSnapshot: "escucha" la colección y se ejecuta automáticamente
+//   cada vez que algo cambia, EN CUALQUIER DISPOSITIVO. Esta es la
+//   pieza clave que reemplaza a localStorage.
+// - doc / updateDoc: para modificar un documento que ya existe (ej. finalizar una cita)
 import {
   getFirestore,
   collection,
@@ -11,7 +26,7 @@ import {
   updateDoc
 } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
-// ⚠️ Configuración de proyecto de Firebase (Neveras OM)
+// ⚠️ Configuración de TU proyecto de Firebase (Neveras OM)
 const firebaseConfig = {
   apiKey: "AIzaSyDP33smZJ4Mwpzk2gCCib8e9YF-6NKS2r0",
   authDomain: "neveras-om.firebaseapp.com",
@@ -24,18 +39,34 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-
+// "citas" es el nombre de la colección (carpeta) dentro de Firestore.
+// Si no existe todavía, Firebase la crea sola en cuanto guardes la primera cita.
 const citasCollection = collection(db, 'citas');
 
 
-
+// --- 2. "Atrapamos" los elementos del HTML que vamos a usar ---
 const formCita = document.getElementById('form-cita');
 const listaCitas = document.getElementById('lista-citas');
 const tablaClientesBody = document.querySelector('#tabla-clientes tbody');
 const listaOcupados = document.getElementById('lista-ocupados');
 
-
+// Clave simple para el técnico. OJO: esto NO es seguridad real,
+// cualquiera que abra este archivo puede verla. Solo sirve como
+// candado básico mientras el proyecto no tiene un login de verdad.
 const CLAVE_TECNICO = 'om2026';
+
+// "Interruptor" que indica si ya se ingresó la clave del técnico en esta
+// visita. Empieza en false: por defecto, NADIE ve las direcciones.
+// Al recargar la página vuelve a false (no queda guardado), así que hay
+// que desbloquear de nuevo cada vez — eso es justamente lo que da seguridad.
+let tecnicoAutenticado = false;
+
+// Guardamos aquí la última lista de citas que llegó de Firebase, para
+// poder volver a dibujar la pantalla (con o sin direcciones) sin tener
+// que esperar a que cambie algo en la base de datos.
+let citasActuales = [];
+
+const botonAccesoTecnico = document.getElementById('boton-acceso-tecnico');
 
 const botonChat = document.getElementById('boton-chat');
 const ventanaChat = document.getElementById('chat');
@@ -45,20 +76,66 @@ const inputChat = document.getElementById('input-chat');
 const mensajesChat = document.getElementById('mensajes-chat');
 
 
-
+/* ============================================================
+   3. ESCUCHAR LA BASE DE DATOS EN TIEMPO REAL
+   onSnapshot se conecta a Firestore y ejecuta esta función:
+   - la primera vez, con los datos que ya existían
+   - y de nuevo, automáticamente, cada vez que CUALQUIER
+     dispositivo agrega, edita o borra una cita.
+   Por eso ya no necesitamos "guardarCitas" ni "obtenerCitas":
+   Firestore se encarga de guardar, y onSnapshot de avisarnos.
+   ============================================================ */
 onSnapshot(citasCollection, (snapshot) => {
+  // snapshot.docs es la lista de documentos actuales en la colección.
+  // Convertimos cada documento en un objeto normal de JS, agregando
+  // su "id" (que Firestore genera solo) para poder identificarlo después.
   const citas = snapshot.docs.map((documento) => ({
     id: documento.id,
     ...documento.data()
   }));
+
+  // Guardamos esta versión más reciente para poder re-dibujar después
+  // (por ejemplo, cuando el técnico ingresa la clave) sin depender de
+  // que Firebase avise de un cambio nuevo.
+  citasActuales = citas;
 
   renderizarCitas(citas);
   renderizarClientes(citas);
   renderizarOcupados(citas);
 });
 
+// --- Botón de acceso técnico: desbloquea las direcciones ---
+botonAccesoTecnico.addEventListener('click', () => {
+  if (tecnicoAutenticado) {
+    // Si ya estaba desbloqueado, este mismo botón sirve para "cerrar sesión"
+    tecnicoAutenticado = false;
+    botonAccesoTecnico.textContent = '🔑 Acceso técnico';
+    botonAccesoTecnico.classList.remove('activo');
+  } else {
+    const clave = prompt('Ingresa la clave del técnico:');
+    if (clave === CLAVE_TECNICO) {
+      tecnicoAutenticado = true;
+      botonAccesoTecnico.textContent = '🔓 Sesión técnico activa';
+      botonAccesoTecnico.classList.add('activo');
+    } else if (clave !== null) {
+      // clave !== null evita mostrar la alerta si el usuario le dio "Cancelar"
+      alert('Clave incorrecta.');
+      return;
+    } else {
+      return;
+    }
+  }
+
+  // Volvemos a dibujar la lista de citas y la tabla de clientes,
+  // esta vez mostrando (o volviendo a ocultar) las direcciones reales.
+  renderizarCitas(citasActuales);
+  renderizarClientes(citasActuales);
+});
 
 
+/* ============================================================
+   4. AGENDAR CITA
+   ============================================================ */
 formCita.addEventListener('submit', async function (evento) {
   evento.preventDefault();
 
@@ -73,18 +150,20 @@ formCita.addEventListener('submit', async function (evento) {
   };
 
   try {
-   
+    // addDoc envía el objeto a Firestore. "await" hace que el código
+    // espere a que termine de guardarse antes de seguir.
     await addDoc(citasCollection, nuevaCita);
     formCita.reset();
     alert('Cita agendada correctamente ✅');
-    
+    // No hace falta llamar a renderizarCitas() aquí: onSnapshot
+    // detecta el cambio solo y actualiza la pantalla.
   } catch (error) {
     console.error('Error al guardar la cita:', error);
     alert('No se pudo agendar la cita. Revisa tu conexión o la configuración de Firebase.');
   }
 });
 
-
+// Dibuja la lista de citas en el <ul id="lista-citas">
 function renderizarCitas(citas) {
   listaCitas.innerHTML = '';
 
@@ -105,7 +184,7 @@ function renderizarCitas(citas) {
       <span class="etiqueta-estado ${finalizada ? 'estado-ok' : 'estado-pendiente'}">
         ${finalizada ? 'Finalizada ✅' : 'Pendiente'}
       </span><br>
-      📍 ${cita.direccion}<br>
+      📍 ${tecnicoAutenticado ? cita.direccion : '<em>Dirección protegida 🔒</em>'}<br>
       📞 ${cita.telefono}<br>
       ${cita.descripcion ? '📝 ' + cita.descripcion + '<br>' : ''}
       ${!finalizada ? `<button class="boton-finalizar" data-id="${cita.id}">Marcar como finalizada</button>` : ''}
@@ -122,10 +201,13 @@ function renderizarCitas(citas) {
 
 // El técnico marca una cita como finalizada
 async function finalizarCita(idCita) {
-  const clave = prompt('Ingresa la clave del técnico para confirmar:');
-  if (clave !== CLAVE_TECNICO) {
-    alert('Clave incorrecta. Solo el técnico puede finalizar una cita.');
-    return;
+  // Si ya iniciaste sesión como técnico, no hace falta pedir la clave otra vez
+  if (!tecnicoAutenticado) {
+    const clave = prompt('Ingresa la clave del técnico para confirmar:');
+    if (clave !== CLAVE_TECNICO) {
+      alert('Clave incorrecta. Solo el técnico puede finalizar una cita.');
+      return;
+    }
   }
 
   try {
@@ -142,7 +224,11 @@ async function finalizarCita(idCita) {
 }
 
 
-
+/* ============================================================
+   5. CLIENTES (derivados de las citas)
+   En vez de tener una colección aparte, tomamos la lista de citas
+   y sacamos los clientes únicos por número de teléfono.
+   ============================================================ */
 function renderizarClientes(citas) {
   const clientesPorTelefono = new Map();
 
@@ -161,7 +247,7 @@ function renderizarClientes(citas) {
     fila.innerHTML = `
       <td>${cliente.nombre}</td>
       <td>${cliente.telefono}</td>
-      <td>${cliente.direccion}</td>
+      <td>${tecnicoAutenticado ? cliente.direccion : '🔒 Protegida'}</td>
       <td>${cliente.ultimaCita}</td>
     `;
     tablaClientesBody.appendChild(fila);
@@ -169,7 +255,9 @@ function renderizarClientes(citas) {
 }
 
 
-
+/* ============================================================
+   6. DISPONIBILIDAD (fechas ocupadas)
+   ============================================================ */
 function renderizarOcupados(citas) {
   listaOcupados.innerHTML = '';
 
@@ -190,7 +278,12 @@ function renderizarOcupados(citas) {
 }
 
 
-
+/* ============================================================
+   7. CHAT (sigue siendo una simulación local, no usa Firestore)
+   Si más adelante quieres que el chat también sea en tiempo real
+   entre dispositivos, se puede migrar de forma parecida, guardando
+   cada mensaje como un documento en otra colección ("mensajes").
+   ============================================================ */
 botonChat.addEventListener('click', () => {
   ventanaChat.classList.toggle('oculto');
 });
