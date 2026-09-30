@@ -1,7 +1,4 @@
-/* ===================== VARIABLES DE COLOR =====================
-   Definir los colores como "variables" (--nombre) permite reutilizarlos
-   en todo el archivo y cambiarlos en un solo lugar si algún día cambia
-   la marca. */
+
 :root {
   --rojo: #d32f2f;
   --gris-oscuro: #2b2b2b;
@@ -9,8 +6,7 @@
   --blanco: #ffffff;
 }
 
-/* Reset básico: quitamos márgenes/rellenos por defecto del navegador
-   y forzamos que padding/border no aumenten el tamaño de los elementos */
+
 * {
   margin: 0;
   padding: 0;
