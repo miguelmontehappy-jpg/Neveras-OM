@@ -1,0 +1,276 @@
+/* ===================== VARIABLES DE COLOR =====================
+   Definir los colores como "variables" (--nombre) permite reutilizarlos
+   en todo el archivo y cambiarlos en un solo lugar si algún día cambia
+   la marca. */
+:root {
+  --rojo: #d32f2f;
+  --gris-oscuro: #2b2b2b;
+  --gris-claro: #f4f4f4;
+  --blanco: #ffffff;
+}
+
+/* Reset básico: quitamos márgenes/rellenos por defecto del navegador
+   y forzamos que padding/border no aumenten el tamaño de los elementos */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--gris-oscuro);
+  background: var(--gris-claro);
+  line-height: 1.5;
+}
+
+/* ===================== ENCABEZADO ===================== */
+.encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--gris-oscuro);
+  color: var(--blanco);
+  padding: 1rem 2rem;
+  flex-wrap: wrap;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.logo-icono {
+  background: var(--rojo);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+
+.logo h1 {
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+
+.eslogan {
+  color: var(--rojo);
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.menu a {
+  color: var(--blanco);
+  text-decoration: none;
+  margin-left: 1.2rem;
+  font-size: 0.9rem;
+}
+
+.menu a:hover {
+  color: var(--rojo);
+}
+
+/* ===================== SECCIONES ===================== */
+.seccion {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.seccion-alterna {
+  background: var(--blanco);
+}
+
+.seccion h2 {
+  color: var(--gris-oscuro);
+  border-left: 5px solid var(--rojo);
+  padding-left: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+/* ===================== FORMULARIO ===================== */
+.tarjeta {
+  background: var(--blanco);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.tarjeta label {
+  font-size: 0.85rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.tarjeta input,
+.tarjeta textarea {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.tarjeta button {
+  margin-top: 1rem;
+  background: var(--rojo);
+  color: var(--blanco);
+  border: none;
+  padding: 0.8rem;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.tarjeta button:hover {
+  background: #b71c1c;
+}
+
+/* ===================== LISTA DE CITAS ===================== */
+.lista {
+  list-style: none;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.lista li {
+  background: var(--blanco);
+  padding: 0.8rem 1rem;
+  border-left: 4px solid var(--rojo);
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* ===================== TABLA DE CLIENTES ===================== */
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--blanco);
+}
+
+.tabla th, .tabla td {
+  text-align: left;
+  padding: 0.7rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabla th {
+  background: var(--gris-oscuro);
+  color: var(--blanco);
+}
+
+/* ===================== CHAT ===================== */
+.boton-chat {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: var(--rojo);
+  color: var(--blanco);
+  border: none;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.ventana-chat {
+  position: fixed;
+  bottom: 5.5rem;
+  right: 1.5rem;
+  width: 300px;
+  max-height: 400px;
+  background: var(--blanco);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Esta clase se agrega/quita con JS para mostrar u ocultar el chat */
+.oculto {
+  display: none;
+}
+
+.chat-encabezado {
+  background: var(--gris-oscuro);
+  color: var(--blanco);
+  padding: 0.7rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-encabezado button {
+  background: none;
+  border: none;
+  color: var(--blanco);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.chat-mensajes {
+  flex: 1;
+  padding: 0.8rem;
+  overflow-y: auto;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 260px;
+}
+
+.mensaje-cliente, .mensaje-bot {
+  padding: 0.5rem 0.7rem;
+  border-radius: 6px;
+  max-width: 80%;
+}
+
+.mensaje-cliente {
+  background: var(--rojo);
+  color: var(--blanco);
+  align-self: flex-end;
+}
+
+.mensaje-bot {
+  background: var(--gris-claro);
+  align-self: flex-start;
+}
+
+.chat-form {
+  display: flex;
+  border-top: 1px solid #ddd;
+}
+
+.chat-form input {
+  flex: 1;
+  border: none;
+  padding: 0.6rem;
+}
+
+.chat-form button {
+  background: var(--rojo);
+  color: var(--blanco);
+  border: none;
+  padding: 0 1rem;
+  cursor: pointer;
+}
+
+/* ===================== PIE DE PÁGINA ===================== */
+.pie {
+  text-align: center;
+  padding: 1rem;
+  background: var(--gris-oscuro);
+  color: var(--blanco);
+  font-size: 0.8rem;
+}

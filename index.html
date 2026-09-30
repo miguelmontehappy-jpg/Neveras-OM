@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Servicio Técnico Neveras OM</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+ 
+  <!-- ===================== ENCABEZADO ===================== -->
+  <header class="encabezado">
+    <div class="logo">
+      <div class="logo-icono">❄️</div>
+      <div>
+        <h1>SERVICIO TÉCNICO NEVERAS OM</h1>
+        <p class="eslogan">PROFESIONAL Y CONFIABLE</p>
+      </div>
+    </div>
+    <nav class="menu">
+      <a href="#agendar">Agendar cita</a>
+      <a href="#clientes">Clientes</a>
+      <a href="#chat">Chat</a>
+    </nav>
+  </header>
+ 
+  <!-- ===================== SECCIÓN AGENDAR CITA ===================== -->
+  <section id="agendar" class="seccion">
+    <h2>Agendar una cita</h2>
+ 
+    
+    <form id="form-cita" class="tarjeta">
+      <label for="nombre-cita">Nombre completo</label>
+      <input type="text" id="nombre-cita" required>
+ 
+      <label for="telefono-cita">Teléfono</label>
+      <input type="tel" id="telefono-cita" required>
+ 
+      <label for="direccion-cita">Dirección del servicio</label>
+      <input type="text" id="direccion-cita" required>
+ 
+      <label for="fecha-cita">Fecha</label>
+      <input type="date" id="fecha-cita" required>
+ 
+      <label for="hora-cita">Hora</label>
+      <input type="time" id="hora-cita" required>
+ 
+      <label for="descripcion-cita">Describe el problema de la nevera</label>
+      <textarea id="descripcion-cita" rows="3"></textarea>
+ 
+      <button type="submit">Agendar cita</button>
+    </form>
+ 
+    <h3>Citas agendadas</h3>
+    
+    <ul id="lista-citas" class="lista"></ul>
+  </section>
+ 
+  <!-- ===================== SECCIÓN CLIENTES ===================== -->
+  <section id="clientes" class="seccion seccion-alterna">
+    <h2>Clientes registrados</h2>
+    <table id="tabla-clientes" class="tabla">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Teléfono</th>
+          <th>Dirección</th>
+          <th>Última cita</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </section>
+ 
+  <!-- ===================== CHAT ===================== -->
+  <button id="boton-chat" class="boton-chat">💬</button>
+ 
+  <div id="chat" class="ventana-chat oculto">
+    <div class="chat-encabezado">
+      <span>Chat con Neveras OM</span>
+      <button id="cerrar-chat">✕</button>
+    </div>
+    <div id="mensajes-chat" class="chat-mensajes"></div>
+    <form id="form-chat" class="chat-form">
+      <input type="text" id="input-chat" placeholder="Escribe tu mensaje..." autocomplete="off" required>
+      <button type="submit">Enviar</button>
+    </form>
+  </div>
+ 
+  <footer class="pie">
+    <p>&copy; 2026 Servicio Técnico Neveras OM</p>
+  </footer>
+ 
+  <script src="script.js"></script>
+</body>
+</html>
+ 
