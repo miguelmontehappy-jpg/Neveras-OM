@@ -85,10 +85,42 @@ botonAccesoTecnico.addEventListener('click', () => {
 });
 
 
-
+//Apartado limite de citas
 formCita.addEventListener('submit', async function (evento) {
   evento.preventDefault();
+  const fechaElegida = document.getElementById('fecha-cita').value;
+  const horaElegida = document.getElementById('hora-cita').value;
 
+  const citasDelDia = citasActuales.filter(
+    (c) => c.fecha === fechaElegida && c.estado !== 'finalizada'
+  );
+
+  const MAXIMO_CITAS_POR_DIA = 3;
+  if (citasDelDia.length >= MAXIMO_CITAS_POR_DIA) {
+    alert('Ese día ya tiene el máximo de 3 citas agendadas. Por favor elige otra fecha.');
+    return;
+  }
+
+
+  const MINUTOS_MINIMOS_ENTRE_CITAS = 180;
+
+  
+  function horaAMinutos(horaTexto) {
+    const [horas, minutos] = horaTexto.split(':').map(Number);
+    return horas * 60 + minutos;
+  }
+
+  const minutosElegidos = horaAMinutos(horaElegida);
+
+  const hayChoque = citasDelDia.some((c) => {
+    const diferencia = Math.abs(horaAMinutos(c.hora) - minutosElegidos);
+    return diferencia < MINUTOS_MINIMOS_ENTRE_CITAS;
+  });
+
+  if (hayChoque) {
+    alert(Ya hay una cita agendada muy cerca de esa hora. Deja al menos ${MINUTOS_MINIMOS_ENTRE_CITAS} minutos de diferencia.);
+    return;
+  }
   const nuevaCita = {
     nombre: document.getElementById('nombre-cita').value.trim(),
     telefono: document.getElementById('telefono-cita').value.trim(),
