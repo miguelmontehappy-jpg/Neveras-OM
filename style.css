@@ -1,7 +1,3 @@
-/* ===================== VARIABLES DE COLOR =====================
-   Definir los colores como "variables" (--nombre) permite reutilizarlos
-   en todo el archivo y cambiarlos en un solo lugar si algún día cambia
-   la marca. */
 :root {
   --rojo: #d32f2f;
   --gris-oscuro: #2b2b2b;
@@ -9,8 +5,6 @@
   --blanco: #ffffff;
 }
 
-/* Reset básico: quitamos márgenes/rellenos por defecto del navegador
-   y forzamos que padding/border no aumenten el tamaño de los elementos */
 * {
   margin: 0;
   padding: 0;
@@ -74,7 +68,6 @@ body {
   color: var(--rojo);
 }
 
-/* Botón de acceso técnico: se ve como los enlaces del menú, pero es un <button> */
 #boton-acceso-tecnico {
   background: none;
   border: 1px solid var(--rojo);
@@ -90,7 +83,6 @@ body {
   background: var(--rojo);
 }
 
-/* ===================== SECCIONES ===================== */
 .seccion {
   padding: 2rem;
   max-width: 900px;
@@ -108,7 +100,6 @@ body {
   margin-bottom: 1rem;
 }
 
-/* ===================== FORMULARIO ===================== */
 .tarjeta {
   background: var(--blanco);
   padding: 1.5rem;
@@ -148,7 +139,6 @@ body {
   background: #b71c1c;
 }
 
-/* ===================== LISTA DE CITAS ===================== */
 .lista {
   list-style: none;
   margin-top: 1rem;
@@ -165,7 +155,6 @@ body {
   box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
 
-/* ===================== ESTADO DE CITAS ===================== */
 .etiqueta-estado {
   display: inline-block;
   font-size: 0.7rem;
@@ -205,7 +194,6 @@ body {
   background: var(--rojo);
 }
 
-/* ===================== TABLA DE CLIENTES ===================== */
 .tabla {
   width: 100%;
   border-collapse: collapse;
@@ -223,7 +211,6 @@ body {
   color: var(--blanco);
 }
 
-/* ===================== CHAT ===================== */
 .boton-chat {
   position: fixed;
   bottom: 1.5rem;
@@ -253,7 +240,6 @@ body {
   overflow: hidden;
 }
 
-/* Esta clase se agrega/quita con JS para mostrar u ocultar el chat */
 .oculto {
   display: none;
 }
@@ -322,7 +308,6 @@ body {
   cursor: pointer;
 }
 
-/* ===================== PIE DE PÁGINA ===================== */
 .pie {
   text-align: center;
   padding: 1rem;
