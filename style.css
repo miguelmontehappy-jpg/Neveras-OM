@@ -18,7 +18,6 @@ body {
   line-height: 1.5;
 }
 
-/* ===================== ENCABEZADO ===================== */
 .encabezado {
   display: flex;
   justify-content: space-between;
