@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Servicio Técnico Neveras OM</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===================== ENCABEZADO ===================== -->
+  <header class="encabezado">
+    <div class="logo">
+      <img src="logo.png" alt="Logo Servicio Técnico Neveras OM" class="logo-icono">
+      <div>
+        <h1>SERVICIO TÉCNICO NEVERAS OM</h1>
+        <p class="eslogan">PROFESIONAL Y CONFIABLE</p>
+      </div>
+    </div>
+    <nav class="menu">
+      <a href="#quienes-somos">Quiénes somos</a>
+      <a href="#disponibilidad">Disponibilidad</a>
+      <a href="#agendar">Agendar cita</a>
+      <a href="#clientes">Clientes</a>
+      <button id="boton-acceso-tecnico" type="button">🔑 Acceso técnico</button>
+    </nav>
+  </header>
+
+  <!-- ===================== QUIÉNES SOMOS ===================== -->
+  <!-- EDITA AQUÍ los textos con la información real de tu negocio -->
+  <section id="quienes-somos" class="seccion">
+    <h2>Quiénes somos</h2>
+    <div class="tarjeta">
+      <p>
+        Somos <strong>Servicio Técnico Neveras OM</strong>, un equipo dedicado a la
+        reparación y el mantenimiento de neveras, con un servicio profesional y confiable.
+        [Escribe aquí tu historia, años de experiencia, zonas que atiendes, etc.]
+      </p>
+
+      <h3>Lo que hacemos</h3>
+      <ul>
+        <li>Diagnóstico y reparación de neveras.</li>
+        <li>Mantenimiento preventivo.</li>
+        <li>[Agrega otros servicios que ofreces]</li>
+      </ul>
+
+      <h3>Por qué confiar en nosotros</h3>
+      <ul>
+        <li>Técnicos identificados y puntuales.</li>
+        <li>Te explicamos el daño antes de empezar la reparación.</li>
+        <li>[Agrega garantías, formas de pago, certificaciones, etc.]</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===================== DISPONIBILIDAD ===================== -->
+  <section id="disponibilidad" class="seccion">
+    <h2>Disponibilidad del técnico</h2>
+    <p class="tarjeta">
+      Atendemos <strong>Lunes a Domingo, de 8:00 am a 6:00 pm</strong>.<br>
+      Antes de agendar, revisa las fechas que ya están ocupadas:
+    </p>
+    <ul id="lista-ocupados" class="lista"></ul>
+  </section>
+
+  <!-- ===================== SECCIÓN AGENDAR CITA ===================== -->
+  <section id="agendar" class="seccion">
+    <h2>Agendar una cita</h2>
+
+    
+    <form id="form-cita" class="tarjeta">
+      <label for="nombre-cita">Nombre completo</label>
+      <input type="text" id="nombre-cita" required>
+
+      <label for="telefono-cita">Teléfono</label>
+      <input type="tel" id="telefono-cita" required>
+
+      <label for="direccion-cita">Dirección del servicio</label>
+      <input type="text" id="direccion-cita" required>
+
+      <label for="tecnico-cita">Técnico</label>
+      <!-- Para agregar más técnicos, añade otra línea <option value="tecnico-2">Nombre</option> -->
+      <select id="tecnico-cita" required>
+        <option value="tecnico-1">Técnico OM</option>
+      </select>
+
+      <label for="fecha-cita">Fecha</label>
+      <input type="date" id="fecha-cita" required>
+
+      <label for="hora-cita">Hora</label>
+      <input type="time" id="hora-cita" required>
+
+      <label for="descripcion-cita">Describe el problema de la nevera</label>
+      <textarea id="descripcion-cita" rows="3"></textarea>
+
+      <button type="submit">Agendar cita</button>
+    </form>
+
+    <h3>Citas agendadas</h3>
+    <ul id="lista-citas" class="lista"></ul>
+  </section>
+
+  <!-- ===================== SECCIÓN CLIENTES ===================== -->
+  <section id="clientes" class="seccion seccion-alterna">
+    <h2>Clientes registrados</h2>
+    <table id="tabla-clientes" class="tabla">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Teléfono</th>
+          <th>Dirección</th>
+          <th>Última cita</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ===================== CHAT ===================== -->
+  <button id="boton-chat" class="boton-chat">💬</button>
+
+  <div id="chat" class="ventana-chat oculto">
+    <div class="chat-encabezado">
+      <span>Chat con Neveras OM</span>
+      <button id="cerrar-chat">✕</button>
+    </div>
+    <div id="mensajes-chat" class="chat-mensajes"></div>
+    <form id="form-chat" class="chat-form">
+      <input type="text" id="input-chat" placeholder="Escribe tu mensaje..." autocomplete="off" required>
+      <button type="submit">Enviar</button>
+    </form>
+  </div>
+
+  <footer class="pie">
+    <p>&copy; 2026 Servicio Técnico Neveras OM</p>
+  </footer>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
